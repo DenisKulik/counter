@@ -1,0 +1,14 @@
+.display {
+    margin-bottom: 30px;
+    padding: 40px 15px;
+    font-size: 60px;
+    color: white;
+    border: 1px solid lightseagreen;
+    border-radius: 10px;
+    background-color: #333333;
+    box-shadow: 0 1.5rem 1rem rgb(0 0 0 / 20%);
+}
+
+.maxValue {
+    color: #fb3333;
+}
