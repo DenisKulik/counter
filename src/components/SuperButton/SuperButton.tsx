@@ -1,4 +1,4 @@
-import styles from './SuperButton.module.css';
+import styles from './SuperButton.module.scss';
 
 type SuperButtonPropsType = {
     name: string

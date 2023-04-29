@@ -1,4 +1,4 @@
-import styles from './Display.module.css';
+import styles from './Display.module.scss';
 
 type DisplayPropsType = {
     value: number

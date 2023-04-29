@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import './App.css';
+import './App.scss';
 import Display from './components/Display/Display';
 import SuperButton from './components/SuperButton/SuperButton';
 
