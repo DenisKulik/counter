@@ -1,19 +1,19 @@
 import styles from './Display.module.scss';
 
 type DisplayPropsType = {
-    value: number
-    message?: string | null
+    title: string | number
     isMaxValue: boolean
 }
 
 const Display = (props: DisplayPropsType) => {
-    const { value, message, isMaxValue } = props;
+    const { title, isMaxValue } = props;
 
     return (
         <div className={ `${ styles.display } ${
-            isMaxValue ? styles.maxValue : ''
+            typeof title === 'string' ? styles.message : '' } ${
+            (isMaxValue || title === 'incorrect value') ? styles.maxValue : ''
         }` }>
-            { message ? message : value }
+            { title }
         </div>
     );
 };
