@@ -33,7 +33,9 @@ const App = () => {
     };
     const resetCounter = () => setCounter(counterState.startValue);
     const setCounterHandler = () => {
-        if (message) setMessage(null);
+        if (message === 'incorrect value') return;
+
+        setMessage(null);
 
         counterState.startValue = startValue;
         counterState.maxValue = maxValue;
@@ -73,7 +75,7 @@ const App = () => {
                         disabled={ counter === startValue }
                         callback={ resetCounter } />
                 </ButtonWrapper>
-            </CounterWrapper>;
+            </CounterWrapper>
         </div>
     );
 };
