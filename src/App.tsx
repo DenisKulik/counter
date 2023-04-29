@@ -31,7 +31,7 @@ const App = () => {
         counterState.startValue < counterState.maxValue &&
         setCounter(counter + 1);
     };
-    const resetCounter = () => setCounter(counterState.startValue);
+    const resetCounter = () => setCounter(startValue);
     const setCounterHandler = () => {
         if (message === 'incorrect value') return;
 
