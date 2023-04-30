@@ -1,80 +1,85 @@
 import { useState } from 'react';
 import './App.scss';
 import CounterWrapper from './components/CounterWrapper';
-import Display from './components/Display/Display';
-import SuperButton from './components/SuperButton/SuperButton';
-import ButtonWrapper from './components/ButtonWrapper';
-import CounterSettings from './components/CounterSettings';
+import CounterInfo from './components/Display/CounterInfo';
+import SuperButton from './components/Buttons/SuperButton/SuperButton';
+import ButtonWrapper from './components/Buttons';
+import Buttons from './components/Buttons';
+import CounterSettings from './components/Display/CounterSettings';
+import Display from './components/Display';
 
-export type CounterStateType = {
-    startValue: number
-    maxValue: number
-}
-
-export type TypeValue = 'start' | 'max'
+export type CounterStateType = { min: number, current: number, max: number }
+const counterState: CounterStateType = { min: 0, current: 0, max: 5 };
 
 const App = () => {
-    const counterState: CounterStateType = { startValue: 0, maxValue: 5, };
+    const [ counter, setCounter ] = useState<CounterStateType>(counterState);
+    const [ settingsMode, setSettingsMode ] = useState<boolean>(false);
+    const [ error, setError ] = useState<boolean>(false);
 
-    const [ startValue, setStartValue ] = useState<number>(
-        counterState.startValue);
-    const [ maxValue, setMaxValue ] = useState<number>(counterState.maxValue);
-    const [ counter, setCounter ] = useState<number>(counterState.startValue);
-    const [ message, setMessage ] = useState<string | null>(null);
-
-    const isCorrectNumber = (num: number, type: TypeValue) => {
-        if (type === 'max') return num > startValue && (num && startValue) >= 0;
-        if (type === 'start') return maxValue > num && (maxValue && num) >= 0;
+    const checkCorrectNumber = () => {
+        if ((counter.min >= counter.max) || (counter.min || counter.max) < 0) {
+            setError(true);
+        } else {
+            setError(false);
+        }
     };
 
+    const changeSettingsMod = () => setSettingsMode(true);
     const increaseCounter = () => {
-        counterState.startValue < counterState.maxValue &&
-        setCounter(counter + 1);
+        counter.current < counter.max &&
+        setCounter({ ...counter, current: counter.current + 1 });
     };
-    const resetCounter = () => setCounter(startValue);
+    const resetCounter = () => setCounter({ ...counter, current: counter.min });
     const setCounterHandler = () => {
-        if (message === 'incorrect value') return;
+        if (error) return;
 
-        setMessage(null);
-
-        counterState.startValue = startValue;
-        counterState.maxValue = maxValue;
-        setCounter(startValue);
+        setSettingsMode(false);
     };
 
     return (
         <div className="App">
             <CounterWrapper>
-                <CounterSettings
-                    startValue={ startValue }
-                    maxValue={ maxValue }
-                    setStartValue={ setStartValue }
-                    setMaxValue={ setMaxValue }
-                    setMessage={ setMessage }
-                    isCorrectNumber={ isCorrectNumber }
-                />
-                <ButtonWrapper>
-                    <SuperButton
-                        name={ 'set' }
-                        disabled={ message === 'incorrect value' }
-                        callback={ setCounterHandler } />
-                </ButtonWrapper>
-            </CounterWrapper>
+                {
+                    settingsMode ? (
+                        <>
+                            <Display>
+                                <CounterSettings
+                                    counter={ counter }
+                                    setCounter={ setCounter }
+                                    checkCorrectNumber={ checkCorrectNumber } />
+                            </Display>
+                            <ButtonWrapper>
+                                <SuperButton
+                                    name={ 'set' }
+                                    disabled={ error }
+                                    callback={ setCounterHandler } />
+                            </ButtonWrapper>
+                        </>
+                    ) : (
+                        <>
+                            <Display>
+                                <CounterInfo
+                                    title={ counter.current }
+                                    isMaxValue={ counter.current ===
+                                        counter.max } />
+                            </Display>
 
-            <CounterWrapper>
-                <Display
-                    title={ message ? message : counter }
-                    isMaxValue={ counter === maxValue } />
-                <ButtonWrapper>
-                    <SuperButton
-                        name={ 'inc' }
-                        disabled={ counter === maxValue }
-                        callback={ increaseCounter } />
-                    <SuperButton
-                        name={ 'reset' }
-                        disabled={ counter === startValue }
-                        callback={ resetCounter } />
-                </ButtonWrapper>
+                            <Buttons>
+                                <SuperButton
+                                    name={ 'inc' }
+                                    disabled={ counter.current === counter.max }
+                                    callback={ increaseCounter } />
+                                <SuperButton
+                                    name={ 'reset' }
+                                    disabled={ counter.current === counter.min }
+                                    callback={ resetCounter } />
+                                <SuperButton
+                                    name={ 'settings' }
+                                    callback={ changeSettingsMod } />
+                            </Buttons>
+                        </>
+                    )
+                }
             </CounterWrapper>
         </div>
     );

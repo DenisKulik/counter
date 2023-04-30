@@ -2,7 +2,7 @@ import styles from './SuperButton.module.scss';
 
 type SuperButtonPropsType = {
     name: string
-    disabled: boolean
+    disabled?: boolean
     callback: () => void
 }
 
