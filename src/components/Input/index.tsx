@@ -1,21 +1,23 @@
-import { ChangeEvent } from 'react';
-import styles from './SuperInput.module.scss';
+import React, { ChangeEvent } from 'react';
+import styles from './Input.module.scss';
 
-type SuperInputPropsType = {
+type InputPropsType = {
     title: string
     type: string
     value: number
+    error: boolean
     callback: (num: number) => void
 }
 
-const SuperInput = (props: SuperInputPropsType) => {
-    const { title, type, value, callback } = props;
+const Input: React.FC<InputPropsType> = (props) => {
+    const { title, type, value, error, callback } = props;
+
     const onChangeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
         callback(Number(e.currentTarget.value));
     };
 
     return (
-        <label className={ styles.superInput }>
+        <label className={ `${ styles.input } ${ error ? styles.error : '' }` }>
             { title }
             <input onChange={ onChangeInputHandler } type={ type }
                    value={ value } />
@@ -23,4 +25,4 @@ const SuperInput = (props: SuperInputPropsType) => {
     );
 };
 
-export default SuperInput;
+export default Input;

@@ -1,40 +1,30 @@
-import { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import styles from './CounterSettings.module.scss';
-import SuperInput from './Input';
-import { CounterStateType } from '../../../App';
+import Input from '../../Input';
+import { CounterType } from '../../../App';
 
 type CounterSettingsPropsType = {
-    counter: CounterStateType
-    setCounter: Dispatch<SetStateAction<CounterStateType>>
-    checkCorrectNumber: () => void
+    counter: CounterType
+    error: boolean
+    setCounter: Dispatch<SetStateAction<CounterType>>
 }
 
-const CounterSettings = (props: CounterSettingsPropsType) => {
-    const {
-        counter,
-        setCounter,
-        checkCorrectNumber
-    } = props;
+const CounterSettings: React.FC<CounterSettingsPropsType> = (props) => {
+    const { counter, error, setCounter } = props;
 
-    const changeMinValue = (num: number) => {
-        setCounter({ ...counter, current: num, min: num });
-    };
-
-    const changeMaxValue = (num: number) => {
-        setCounter({ ...counter, max: num });
-    };
-
-    // TODO
-    checkCorrectNumber();
+    const changeMinValue = (num: number) => setCounter(
+        { ...counter, current: num, min: num });
+    const changeMaxValue = (num: number) => setCounter(
+        { ...counter, current: counter.min, max: num });
 
     return (
         <div className={ styles.counterSettings }>
-            <SuperInput title={ 'Max value' } type={ 'number' }
-                        value={ counter.max }
-                        callback={ (num) => changeMaxValue(num) } />
-            <SuperInput title={ 'Start value' } type={ 'number' }
-                        value={ counter.min }
-                        callback={ (num) => changeMinValue(num) } />
+            <Input title={ 'Max value' } type={ 'number' }
+                   value={ counter.max } error={ error }
+                   callback={ (num) => changeMaxValue(num) } />
+            <Input title={ 'Min value' } type={ 'number' }
+                   value={ counter.min } error={ error }
+                   callback={ (num) => changeMinValue(num) } />
         </div>
     );
 };

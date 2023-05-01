@@ -1,0 +1,28 @@
+.input {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 28px;
+  text-transform: uppercase;
+
+  &:not(:last-child) {
+    margin-bottom: 25px;
+  }
+
+  & input {
+    padding: 5px;
+    text-align: center;
+    font-size: 23px;
+    border-radius: 5px;
+    border: 1px solid lightseagreen;
+  }
+
+  &.error {
+    color: palevioletred;
+
+    & input {
+      border: 1px solid indianred;
+      background-color: pink;
+    }
+  }
+}

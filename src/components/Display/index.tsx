@@ -1,13 +1,9 @@
 import styles from './Display.module.scss';
 import React from 'react';
 
-export type DisplayWrapperPropsType = {
-    children: React.ReactNode
-}
+type DisplayPropsType = { children: React.ReactNode }
 
-const Display = (props: DisplayWrapperPropsType) => {
-    const { children } = props;
-
+const Display: React.FC<DisplayPropsType> = ({ children }) => {
     return (
         <div className={ `${ styles.display }` }>
             { children }

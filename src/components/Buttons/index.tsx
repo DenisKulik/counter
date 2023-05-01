@@ -1,18 +1,14 @@
 import React from 'react';
-import styles from './ButtonWrapper.module.scss';
+import styles from './Buttons.module.scss';
 
-type ButtonWrapperPropsType = {
-    children: React.ReactNode
-}
+type ButtonsPropsType = { children: React.ReactNode }
 
-const ButtonWrapper: React.FC<ButtonWrapperPropsType> = (props) => {
-    const { children } = props;
-
+const Buttons: React.FC<ButtonsPropsType> = ({ children }) => {
     return (
-        <div className={ styles.buttonWrapper }>
+        <div className={ styles.buttons }>
             { children }
         </div>
     );
 };
 
-export default ButtonWrapper;
+export default Buttons;
