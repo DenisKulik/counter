@@ -1,26 +1,32 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, DetailedHTMLProps } from 'react';
 import styles from './Input.module.scss';
 
-type InputPropsType = {
+
+type DefaultInputProps = DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
+
+type InputPropsType = DefaultInputProps & {
     title: string
     type: string
-    value: number
-    error: boolean
-    callback: (num: number) => void
-}
+    value?: number
+    error?: boolean
+    callback?: (num: number) => void
+};
 
 const Input: React.FC<InputPropsType> = (props) => {
-    const { title, type, value, error, callback } = props;
+    const { title, type, value, error, callback, ...rest } = props;
 
     const onChangeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        callback(Number(e.currentTarget.value));
+        callback && callback(Number(e.currentTarget.value));
     };
 
     return (
         <label className={ `${ styles.input } ${ error ? styles.error : '' }` }>
             { title }
-            <input onChange={ onChangeInputHandler } type={ type }
-                   value={ value } />
+            <input onChange={ onChangeInputHandler }
+                   type={ type }
+                   value={ value }
+                   { ...rest }
+            />
         </label>
     );
 };

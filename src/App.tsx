@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import './App.scss';
 import CounterWrapper from './components/CounterWrapper';
 import CounterInfo from './components/Display/CounterInfo';
-import Button from './components/Buttons/Button';
-import Buttons from './components/Buttons';
+import Button from './components/ActionsBlock/Button';
+import ActionsBlock from './components/ActionsBlock';
 import CounterSettings from './components/Display/CounterSettings';
 import Display from './components/Display';
 
@@ -15,33 +15,32 @@ const App = () => {
     const [ settingsMode, setSettingsMode ] = useState<boolean>(false);
     const [ error, setError ] = useState<boolean>(false);
 
-    const checkCorrectCounter = () => {
+    const checkCorrectCounter = (): void => {
         (counter.min >= counter.max) || (counter.min || counter.max) < 0 ?
         setError(true) : setError(false);
     };
-    const changeSettingsMod = () => setSettingsMode(true);
-    const increaseCounter = () => {
+    const changeSettingsMod = (): void => setSettingsMode(true);
+    const increaseCounter = (): void => {
         if (counter.current < counter.max) {
             setCounter({ ...counter, current: counter.current + 1 });
             localStorage.setItem('counter',
                 JSON.stringify({ ...counter, current: counter.current + 1 }));
         }
     };
-    const resetCounter = () => {
+    const resetCounter = (): void => {
         setCounter({ ...counter, current: counter.min });
         localStorage.setItem('counter',
             JSON.stringify({ ...counter, current: counter.min }));
     };
-    const setCounterHandler = () => {
+    const setCounterHandler = (): void => {
         if (error) return;
-
         setSettingsMode(false);
         localStorage.setItem('counter', JSON.stringify(counter));
     };
 
     useEffect(() => {
         const counterData = localStorage.getItem('counter');
-        if (counterData) setCounter(JSON.parse(counterData));
+        counterData && setCounter(JSON.parse(counterData));
     }, []);
     useEffect(checkCorrectCounter, [ counter ]);
 
@@ -52,7 +51,8 @@ const App = () => {
                     {
                         settingsMode ? (
                             <CounterSettings
-                                counter={ counter } error={ error }
+                                counter={ counter }
+                                error={ error }
                                 setCounter={ setCounter }
                             />
                         ) : (
@@ -64,31 +64,34 @@ const App = () => {
                     }
                 </Display>
 
-                <Buttons>
+                <ActionsBlock>
                     {
                         settingsMode ? (
                             <Button
-                                name={ 'set' } disabled={ error }
+                                name="set"
+                                disabled={ error }
                                 callback={ setCounterHandler }
                             />
                         ) : (
                             <>
                                 <Button
-                                    name={ 'inc' } callback={ increaseCounter }
+                                    name="inc"
+                                    callback={ increaseCounter }
                                     disabled={ counter.current === counter.max }
                                 />
                                 <Button
-                                    name={ 'reset' } callback={ resetCounter }
+                                    name="reset"
+                                    callback={ resetCounter }
                                     disabled={ counter.current === counter.min }
                                 />
                                 <Button
-                                    name={ 'settings' }
+                                    name="settings"
                                     callback={ changeSettingsMod }
                                 />
                             </>
                         )
                     }
-                </Buttons>
+                </ActionsBlock>
             </CounterWrapper>
         </div>
     );

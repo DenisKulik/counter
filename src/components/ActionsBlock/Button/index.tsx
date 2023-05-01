@@ -9,8 +9,10 @@ type ButtonPropsType = {
 
 const Button: React.FC<ButtonPropsType> = ({ name, disabled, callback }) => {
     return (
-        <button className={ styles.button } onClick={ callback }
-                disabled={ disabled }>
+        <button
+            className={ styles.button }
+            onClick={ callback }
+            disabled={ disabled }>
             { name }
         </button>
     );
