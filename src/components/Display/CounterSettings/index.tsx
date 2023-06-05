@@ -16,15 +16,15 @@ const CounterSettings: React.FC<CounterSettingsPropsType> = (props) => {
     return (
         <div className={styles.counterSettings}>
             <Input
-                title={'Max value'}
-                type={'number'}
+                title="Max value"
+                type="number"
                 value={counter.max}
                 error={error}
                 callback={(num) => changeMaxValue(num)}
             />
             <Input
-                title={'Min value'}
-                type={'number'}
+                title="Min value"
+                type="number"
                 value={counter.min}
                 error={error}
                 callback={(num) => changeMinValue(num)}
