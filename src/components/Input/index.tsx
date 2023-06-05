@@ -13,19 +13,19 @@ type InputPropsType = DefaultInputProps & {
 };
 
 const Input: React.FC<InputPropsType> = (props) => {
-    const { title, type, value, error, callback, ...rest } = props;
+    const { title, type, value, error, callback, ...restProps } = props;
 
     const onChangeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
         callback && callback(Number(e.currentTarget.value));
     };
 
     return (
-        <label className={ `${ styles.input } ${ error ? styles.error : '' }` }>
-            { title }
-            <input onChange={ onChangeInputHandler }
-                   type={ type }
-                   value={ value }
-                   { ...rest }
+        <label className={`${styles.input} ${error ? styles.error : ''}`}>
+            {title}
+            <input onChange={onChangeInputHandler}
+                   type={type}
+                   value={value}
+                   {...restProps}
             />
         </label>
     );
