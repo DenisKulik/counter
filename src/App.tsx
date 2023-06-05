@@ -26,6 +26,7 @@ const App = () => {
         (counter.min >= counter.max) || (counter.min || counter.max) < 0 ?
         setError(true) : setError(false);
     };
+
     const changeSettingsMod = (): void => {
         setSettingsMode(true);
     };
