@@ -19,4 +19,9 @@
     transform: translateY(-1px);
     box-shadow: 0 0.75rem 0.5rem rgb(0 0 0 / 20%);
   }
+
+  &:disabled {
+    cursor: not-allowed;
+    box-shadow: none;
+  }
 }
