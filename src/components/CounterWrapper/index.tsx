@@ -1,12 +1,10 @@
-import React from 'react';
+import { FC, PropsWithChildren } from 'react';
 import styles from './CounterWrapper.module.scss';
 
-type CounterWrapperPropsType = { children: React.ReactNode }
-
-const CounterWrapper: React.FC<CounterWrapperPropsType> = ({ children }) => {
+const CounterWrapper: FC<PropsWithChildren> = ({ children }) => {
     return (
-        <div className={ styles.counterWrapper }>
-            { children }
+        <div className={styles.counterWrapper}>
+            {children}
         </div>
     );
 };
