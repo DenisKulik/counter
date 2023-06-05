@@ -37,18 +37,18 @@ export const counterReducer = (
     }
 };
 
-type ActionsTypes = increaseCounterACType | resetCounterACType
-    | changeMaxValueACType | changeMinValueACType;
+type ActionsTypes =
+    | increaseCounterACType
+    | resetCounterACType
+    | changeMaxValueACType
+    | changeMinValueACType;
+
 type increaseCounterACType = ReturnType<typeof increaseCounterAC>;
 type resetCounterACType = ReturnType<typeof resetCounterAC>;
 type changeMaxValueACType = ReturnType<typeof changeMaxValueAC>;
 type changeMinValueACType = ReturnType<typeof changeMinValueAC>;
 
-export const increaseCounterAC = () => {
-    return {
-        type: 'INCREASE'
-    } as const;
-};
+export const increaseCounterAC = () => ({ type: 'INCREASE' } as const);
 
 export const resetCounterAC = () => {
     return {
