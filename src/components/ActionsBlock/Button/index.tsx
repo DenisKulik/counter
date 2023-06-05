@@ -1,19 +1,28 @@
 import React from 'react';
 import styles from './Button.module.scss';
 
-type ButtonPropsType = {
+type DefaultButtonType = React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>;
+
+type ButtonPropsType = DefaultButtonType & {
     name: string
     disabled?: boolean
     callback: () => void
 }
 
-const Button: React.FC<ButtonPropsType> = ({ name, disabled, callback }) => {
+const Button: React.FC<ButtonPropsType> = ({
+    name,
+    disabled,
+    callback,
+    ...restProps
+}) => {
     return (
         <button
-            className={ styles.button }
-            onClick={ callback }
-            disabled={ disabled }>
-            { name }
+            className={styles.button}
+            onClick={callback}
+            disabled={disabled}
+            {...restProps}
+        >
+            {name}
         </button>
     );
 };
