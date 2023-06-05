@@ -1,47 +1,56 @@
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import './App.scss';
+import { AppRootStateType } from './state/store.ts';
 import CounterWrapper from './components/CounterWrapper';
 import CounterInfo from './components/Display/CounterInfo';
 import Button from './components/ActionsBlock/Button';
 import ActionsBlock from './components/ActionsBlock';
 import CounterSettings from './components/Display/CounterSettings';
 import Display from './components/Display';
+import {
+    changeMaxValueAC, changeMinValueAC, increaseCounterAC, resetCounterAC
+} from './state/counterReducer.ts';
 
 export type CounterType = { min: number, current: number, max: number }
 
 const App = () => {
-    const [ counter, setCounter ] = useState<CounterType>(
-        { min: 0, current: 0, max: 5 });
+    const counter = useSelector<AppRootStateType, CounterType>(
+        state => state.counter);
     const [ settingsMode, setSettingsMode ] = useState<boolean>(false);
     const [ error, setError ] = useState<boolean>(false);
+
+    const dispatch = useDispatch();
 
     const checkCorrectCounter = (): void => {
         (counter.min >= counter.max) || (counter.min || counter.max) < 0 ?
         setError(true) : setError(false);
     };
-    const changeSettingsMod = (): void => setSettingsMode(true);
+    const changeSettingsMod = (): void => {
+        setSettingsMode(true);
+    };
+
     const increaseCounter = (): void => {
-        if (counter.current < counter.max) {
-            setCounter({ ...counter, current: counter.current + 1 });
-            localStorage.setItem('counter',
-                JSON.stringify({ ...counter, current: counter.current + 1 }));
-        }
+        dispatch(increaseCounterAC());
     };
+
     const resetCounter = (): void => {
-        setCounter({ ...counter, current: counter.min });
-        localStorage.setItem('counter',
-            JSON.stringify({ ...counter, current: counter.min }));
+        dispatch(resetCounterAC());
     };
+
     const setCounterHandler = (): void => {
         if (error) return;
         setSettingsMode(false);
-        localStorage.setItem('counter', JSON.stringify(counter));
     };
 
-    useEffect(() => {
-        const counterData = localStorage.getItem('counter');
-        counterData && setCounter(JSON.parse(counterData));
-    }, []);
+    const changeMaxValue = (num: number): void => {
+        dispatch(changeMaxValueAC(num));
+    };
+
+    const changeMinValue = (num: number): void => {
+        dispatch(changeMinValueAC(num));
+    };
+
     useEffect(checkCorrectCounter, [ counter ]);
 
     return (
@@ -51,14 +60,15 @@ const App = () => {
                     {
                         settingsMode ? (
                             <CounterSettings
-                                counter={ counter }
-                                error={ error }
-                                setCounter={ setCounter }
+                                error={error}
+                                counter={counter}
+                                changeMaxValue={changeMaxValue}
+                                changeMinValue={changeMinValue}
                             />
                         ) : (
                             <CounterInfo
-                                title={ counter.current }
-                                error={ counter.current === counter.max }
+                                title={counter.current}
+                                error={counter.current === counter.max}
                             />
                         )
                     }
@@ -69,24 +79,24 @@ const App = () => {
                         settingsMode ? (
                             <Button
                                 name="set"
-                                disabled={ error }
-                                callback={ setCounterHandler }
+                                disabled={error}
+                                callback={setCounterHandler}
                             />
                         ) : (
                             <>
                                 <Button
                                     name="inc"
-                                    callback={ increaseCounter }
-                                    disabled={ counter.current === counter.max }
+                                    callback={increaseCounter}
+                                    disabled={counter.current === counter.max}
                                 />
                                 <Button
                                     name="reset"
-                                    callback={ resetCounter }
-                                    disabled={ counter.current === counter.min }
+                                    callback={resetCounter}
+                                    disabled={counter.current === counter.min}
                                 />
                                 <Button
                                     name="settings"
-                                    callback={ changeSettingsMod }
+                                    callback={changeSettingsMod}
                                 />
                             </>
                         )

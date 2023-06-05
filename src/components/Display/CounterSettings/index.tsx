@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import styles from './CounterSettings.module.scss';
 import Input from '../../Input';
 import { CounterType } from '../../../App';
@@ -6,28 +6,29 @@ import { CounterType } from '../../../App';
 type CounterSettingsPropsType = {
     counter: CounterType
     error: boolean
-    setCounter: Dispatch<SetStateAction<CounterType>>
+    changeMaxValue: (value: number) => void
+    changeMinValue: (value: number) => void
 }
 
 const CounterSettings: React.FC<CounterSettingsPropsType> = (props) => {
-    const { counter, error, setCounter } = props;
-
-    const changeMinValue = (num: number) => setCounter(
-        { ...counter, current: num, min: num });
-    const changeMaxValue = (num: number) => setCounter(
-        { ...counter, current: counter.min, max: num });
+    const { counter, error, changeMaxValue, changeMinValue } = props;
 
     return (
-        <div className={ styles.counterSettings }>
-            <Input title={ 'Max value' }
-                   type={ 'number' }
-                   value={ counter.max }
-                   error={ error }
-                   callback={ (num) => changeMaxValue(num) }
+        <div className={styles.counterSettings}>
+            <Input
+                title={'Max value'}
+                type={'number'}
+                value={counter.max}
+                error={error}
+                callback={(num) => changeMaxValue(num)}
             />
-            <Input title={ 'Min value' } type={ 'number' }
-                   value={ counter.min } error={ error }
-                   callback={ (num) => changeMinValue(num) } />
+            <Input
+                title={'Min value'}
+                type={'number'}
+                value={counter.min}
+                error={error}
+                callback={(num) => changeMinValue(num)}
+            />
         </div>
     );
 };
