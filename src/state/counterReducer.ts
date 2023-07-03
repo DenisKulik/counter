@@ -1,31 +1,20 @@
-import { CounterType } from '../App.tsx';
-
-const initialState: CounterType = {
+const initialState = {
     min: 0,
     current: 0,
     max: 5
 };
 
 export const counterReducer = (
-    state: CounterType = initialState,
-    action: ActionsTypes) => {
+    state: InitialStateType = initialState,
+    action: ActionsType
+) => {
     switch (action.type) {
         case 'INCREASE':
-            return {
-                ...state,
-                current: state.current + 1
-            };
+            return { ...state, current: state.current + 1 };
         case 'RESET':
-            return {
-                ...state,
-                current: state.min
-            };
+            return { ...state, current: state.min };
         case 'CHANGE-MAX-VALUE':
-            return {
-                ...state,
-                current: state.min,
-                max: action.payload.num
-            };
+            return { ...state, current: state.min, max: action.payload.num };
         case 'CHANGE-MIN-VALUE':
             return {
                 ...state,
@@ -37,35 +26,18 @@ export const counterReducer = (
     }
 };
 
-type ActionsTypes =
-    | increaseCounterACType
-    | resetCounterACType
-    | changeMaxValueACType
-    | changeMinValueACType;
-
-type increaseCounterACType = ReturnType<typeof increaseCounterAC>;
-type resetCounterACType = ReturnType<typeof resetCounterAC>;
-type changeMaxValueACType = ReturnType<typeof changeMaxValueAC>;
-type changeMinValueACType = ReturnType<typeof changeMinValueAC>;
-
 export const increaseCounterAC = () => ({ type: 'INCREASE' } as const);
+export const resetCounterAC = () => ({ type: 'RESET' } as const);
+export const changeMaxValueAC = (num: number) =>
+    ({ type: 'CHANGE-MAX-VALUE', payload: { num } } as const);
+export const changeMinValueAC = (num: number) =>
+    ({ type: 'CHANGE-MIN-VALUE', payload: { num } } as const);
 
-export const resetCounterAC = () => {
-    return {
-        type: 'RESET'
-    } as const;
-};
+// types
+export type InitialStateType = typeof initialState;
 
-export const changeMaxValueAC = (num: number) => {
-    return {
-        type: 'CHANGE-MAX-VALUE',
-        payload: { num }
-    } as const;
-};
-
-export const changeMinValueAC = (num: number) => {
-    return {
-        type: 'CHANGE-MIN-VALUE',
-        payload: { num }
-    } as const;
-};
+type ActionsType =
+    | ReturnType<typeof increaseCounterAC>
+    | ReturnType<typeof resetCounterAC>
+    | ReturnType<typeof changeMaxValueAC>
+    | ReturnType<typeof changeMinValueAC>;
