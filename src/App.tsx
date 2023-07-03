@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './App.scss';
 import { AppRootStateType } from './state/store.ts';
@@ -17,13 +17,12 @@ const App = () => {
     const counter = useSelector<AppRootStateType, InitialStateType>(
         state => state.counter);
     const [ settingsMode, setSettingsMode ] = useState<boolean>(false);
-    const [ error, setError ] = useState<boolean>(false);
 
     const dispatch = useDispatch();
 
-    const checkCorrectCounter = (): void => {
-        (counter.min >= counter.max) || (counter.min || counter.max) < 0 ?
-        setError(true) : setError(false);
+    // TODO
+    const isCorrectCounter = (): boolean => {
+        return (counter.min < counter.max) && (counter.min && counter.max) >= 0;
     };
     const changeSettingsMod = (): void => {
         setSettingsMode(true);
@@ -35,7 +34,6 @@ const App = () => {
         dispatch(resetCounterAC());
     };
     const setCounterHandler = (): void => {
-        if (error) return;
         setSettingsMode(false);
     };
     const changeMaxValue = (num: number): void => {
@@ -45,8 +43,6 @@ const App = () => {
         dispatch(changeMinValueAC(num));
     };
 
-    useEffect(checkCorrectCounter, [ counter ]);
-
     return (
         <div className="App">
             <CounterWrapper>
@@ -54,7 +50,7 @@ const App = () => {
                     {
                         settingsMode ? (
                             <CounterSettings
-                                error={error}
+                                error={!isCorrectCounter()}
                                 counter={counter}
                                 changeMaxValue={changeMaxValue}
                                 changeMinValue={changeMinValue}
@@ -73,7 +69,7 @@ const App = () => {
                         settingsMode ? (
                             <Button
                                 name="set"
-                                disabled={error}
+                                disabled={!isCorrectCounter()}
                                 callback={setCounterHandler}
                             />
                         ) : (
