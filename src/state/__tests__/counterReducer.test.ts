@@ -1,14 +1,13 @@
-import { CounterType } from '../../App.tsx';
 import {
     counterReducer,
     increaseCounterAC,
     resetCounterAC,
     changeMaxValueAC,
-    changeMinValueAC,
+    changeMinValueAC, InitialStateType,
 } from '../counterReducer';
 
 describe('Counter Reducer', () => {
-    let initialState: CounterType;
+    let initialState: InitialStateType;
 
     beforeEach(() => {
         initialState = {

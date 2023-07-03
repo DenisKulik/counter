@@ -1,10 +1,11 @@
 import React from 'react';
 import styles from './CounterSettings.module.scss';
 import Input from '../../Input';
-import { CounterType } from '../../../App';
+import { InitialStateType } from '../../../state/counterReducer.ts';
+
 
 type CounterSettingsPropsType = {
-    counter: CounterType
+    counter: InitialStateType
     error: boolean
     changeMaxValue: (value: number) => void
     changeMinValue: (value: number) => void
