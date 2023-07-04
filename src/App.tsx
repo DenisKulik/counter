@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './App.scss';
 import { AppRootStateType } from './state/store.ts';
@@ -13,17 +13,22 @@ import {
     resetCounterAC
 } from './state/counterReducer.ts';
 
-const App = () => {
+type AppPropsType = {
+    checkCorrectCounter: (counter: InitialStateType) => boolean
+}
+
+const App = ({ checkCorrectCounter }: AppPropsType) => {
     const counter = useSelector<AppRootStateType, InitialStateType>(
         state => state.counter);
     const [ settingsMode, setSettingsMode ] = useState<boolean>(false);
+    const [ error, setError ] = useState<boolean>(false);
 
     const dispatch = useDispatch();
 
-    // TODO
-    const isCorrectCounter = (): boolean => {
-        return (counter.min < counter.max) && (counter.min && counter.max) >= 0;
+    const checkCorrectCounterHandler = () => {
+        checkCorrectCounter(counter) ? setError(false) : setError(true);
     };
+
     const changeSettingsMod = (): void => {
         setSettingsMode(true);
     };
@@ -34,6 +39,7 @@ const App = () => {
         dispatch(resetCounterAC());
     };
     const setCounterHandler = (): void => {
+        if (error) return;
         setSettingsMode(false);
     };
     const changeMaxValue = (num: number): void => {
@@ -43,6 +49,8 @@ const App = () => {
         dispatch(changeMinValueAC(num));
     };
 
+    useEffect(checkCorrectCounterHandler, [ counter, checkCorrectCounter ]);
+
     return (
         <div className="App">
             <CounterWrapper>
@@ -50,7 +58,7 @@ const App = () => {
                     {
                         settingsMode ? (
                             <CounterSettings
-                                error={!isCorrectCounter()}
+                                error={error}
                                 counter={counter}
                                 changeMaxValue={changeMaxValue}
                                 changeMinValue={changeMinValue}
@@ -69,7 +77,7 @@ const App = () => {
                         settingsMode ? (
                             <Button
                                 name="set"
-                                disabled={!isCorrectCounter()}
+                                disabled={error}
                                 callback={setCounterHandler}
                             />
                         ) : (
